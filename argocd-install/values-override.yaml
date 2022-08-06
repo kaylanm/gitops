@@ -1,0 +1,90 @@
+## ArgoCD configuration
+## Ref: https://github.com/argoproj/argo-cd
+##
+## Configs
+configs:
+  repositories:
+    argo:
+      name: argo
+      type: helm
+      url: https://argoproj.github.io/argo-helm
+    gitops:
+      name: gitops
+      type: git
+      url: https://github.com/kaylanm/gitops.git
+## Server
+server:
+  ## ArgoCD config
+  ## reference https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cm.yaml
+  configEnabled: true
+  extraArgs:
+    - --insecure # TLS is terminated by the ingress
+  additionalApplications: 
+    - name: argocd
+      namespace: argocd
+      destination:
+        namespace: argocd
+        server: https://kubernetes.default.svc
+      project: argocd
+      source:
+        helm:
+          version: v3
+          valueFiles:
+            - values.yaml
+            - ../../../values-override.yaml
+        targetRevision: HEAD
+        path: argocd-install/argo-helm/charts/argo-cd
+        repoURL: https://github.com/kaylanm/gitops.git
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+    # - name: argocd-apps
+    #   namespace: argocd
+    #   destination:
+    #     namespace: argocd
+    #     server: https://kubernetes.default.svc
+    #   project: argocd
+    #   source:
+    #     path: argocd-apps
+    #     repoURL: https://github.com/kaylanm/gitops.git
+    #     targetRevision: HEAD
+    #     directory:
+    #       recurse: true
+    #       jsonnet: {}
+    #   syncPolicy:
+    #     automated:
+    #       selfHeal: true
+    #       prune: true
+    # - name: argocd-appprojects
+    #   namespace: argocd
+    #   destination:
+    #     namespace: argocd
+    #     server: https://kubernetes.default.svc
+    #   project: argocd
+    #   source:
+    #     path: argocd-appprojects
+    #     repoURL: https://github.com/kaylanm/gitops.git
+    #     targetRevision: HEAD
+    #     directory:
+    #       recurse: true
+    #       jsonnet: {}
+    #   syncPolicy:
+    #     automated:
+    #       selfHeal: true
+    #       prune: true
+  additionalProjects: 
+  - name: argocd
+    namespace: argocd
+    additionalLabels: {}
+    additionalAnnotations: {}
+    description: ArgoCD
+    sourceRepos:
+    - '*'
+    destinations:
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+    clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+    orphanedResources:
+      warn: false

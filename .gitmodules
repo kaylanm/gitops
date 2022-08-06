@@ -1,0 +1,4 @@
+[submodule "argocd-install/argo-helm"]
+	path = argocd-install/argo-helm
+	url = https://github.com/argoproj/argo-helm.git
+	branch = argo-cd-4.10.4
