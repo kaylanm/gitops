@@ -6,4 +6,4 @@ helm upgrade --install argocd argo/argo-cd \
   --namespace=argocd \
   --create-namespace \
   -f values-override.yaml \
-  --version 4.10.4
+  --version 4.10.5
