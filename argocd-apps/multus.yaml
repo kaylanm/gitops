@@ -7,7 +7,7 @@ spec:
   destination:
     namespace: multus
     server: https://kubernetes.default.svc
-  project: infrastructure
+  project: multus
   source:
     repoURL: https://k8s-at-home.com/charts/
     targetRevision: '3.5.2'
