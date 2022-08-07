@@ -19,6 +19,14 @@ server:
   configEnabled: true
   extraArgs:
     - --insecure # TLS is terminated by the ingress
+  ingress:
+    enabled: "true"
+    hosts:
+      - argocd.kaylan.dev
+  ingressGrpc:
+    enabled: "true"
+    hosts:
+      - argocd.kaylan.dev
   additionalApplications: 
     - name: argocd
       namespace: argocd
