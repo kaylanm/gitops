@@ -21,12 +21,16 @@ server:
     - --insecure # TLS is terminated by the ingress
   ingress:
     enabled: "true"
+    https: "true"
     hosts:
       - argocd.kaylan.dev
   ingressGrpc:
     enabled: "true"
+    https: "true"
+    annotations:
+      ingress.kubernetes.io/protocol: h2c
     hosts:
-      - argocd.kaylan.dev
+      - grpc.argocd.kaylan.dev
   additionalApplications: 
     - name: argocd
       namespace: argocd
